@@ -27,6 +27,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary *)args callback:(RCTResponseSenderBlock)cal
     // Initialize the Safari View
     self.safariView = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:args[@"url"]] entersReaderIfAvailable:args[@"readerMode"]];
     self.safariView.delegate = self;
+    self.safariView.modalPresentationStyle = UIModalPresentationOverFullScreen;
 
     // Set tintColor if available
     if (tintColorString) {
