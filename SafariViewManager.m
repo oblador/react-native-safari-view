@@ -1,8 +1,9 @@
+
 #import "SafariViewManager.h"
-#import "RCTUtils.h"
-#import "RCTLog.h"
-#import "RCTConvert.h"
-#import "RCTEventDispatcher.h"
+#import <React/RCTUtils.h>
+#import <React/RCTLog.h>
+#import <React/RCTConvert.h>
+#import <React/RCTEventDispatcher.h>
 
 @implementation SafariViewManager
 @synthesize bridge = _bridge;
@@ -17,6 +18,8 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(show:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
 {
     UIColor *tintColorString = args[@"tintColor"];
+    UIColor *barTintColorString = args[@"barTintColor"];
+    BOOL fromBottom = [args[@"fromBottom"] boolValue];
 
     // Error if no url is passed
     if (!args[@"url"]) {
@@ -33,7 +36,24 @@ RCT_EXPORT_METHOD(show:(NSDictionary *)args callback:(RCTResponseSenderBlock)cal
     // Set tintColor if available
     if (tintColorString) {
         UIColor *tintColor = [RCTConvert UIColor:tintColorString];
-        [self.safariView.view setTintColor:tintColor];
+        if ([self.safariView respondsToSelector:@selector(setPreferredControlTintColor:)]) {
+            [self.safariView setPreferredControlTintColor:tintColor];
+        } else {
+            [self.safariView.view setTintColor:tintColor];
+        }
+    }
+
+    // Set barTintColor if available
+    if (barTintColorString) {
+        UIColor *barTintColor = [RCTConvert UIColor:barTintColorString];
+        if ([self.safariView respondsToSelector:@selector(setPreferredBarTintColor:)]) {
+            [self.safariView setPreferredBarTintColor:barTintColor];
+        }
+    }
+
+    // Set modal transition style
+    if(fromBottom) {
+        self.safariView.modalPresentationStyle = UIModalPresentationOverFullScreen;
     }
 
     // Display the Safari View

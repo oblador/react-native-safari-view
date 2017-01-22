@@ -1,5 +1,6 @@
 # React Native Safari View
 
+[![react-native version](https://img.shields.io/badge/react--native-0.40-blue.svg?style=flat-square)](http://facebook.github.io/react-native/releases/0.40)
 [![npm version](https://img.shields.io/npm/v/react-native-safari-view.svg?style=flat-square)](https://www.npmjs.com/package/react-native-safari-view)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-safari-view.svg?style=flat-square)](https://www.npmjs.com/package/react-native-safari-view)
 [![Code Climate](https://img.shields.io/codeclimate/github/naoufal/react-native-safari-view.svg?style=flat-square)](https://codeclimate.com/github/naoufal/react-native-safari-view)
@@ -20,6 +21,9 @@ React Native Safari View is a [Safari View Controller](https://developer.apple.c
 ```shell
 npm i --save react-native-safari-view
 ```
+
+## Support
+Due to the rapid changes being made in the React Native ecosystem, we are not officially going to support this module on anything but the latest version of React Native. The current supported version is indicated on the React Native badge at the top of this README.  If it's out of date, we encourage you to submit a pull request!
 
 ## Usage
 ### Linking the Library
@@ -79,12 +83,14 @@ class YourComponent extends Component {
 Displays a Safari View with the provided url.
 
 __Arguments__
-- `safariOptions` - An `Object` containing a `url` key and optionally a `readerMode` key and/or a `tintColor`.
+- `safariOptions` - An `Object` containing a `url` key and optionally a `readerMode` key, a `tintColor`, and/or a `barTintColor`.
 
 __safariOptions__
 - `url` - A `String` containing the url you want to load in the Safari View
 - `readerMode` - A `Boolean` indicating to use Safari's Reader Mode if available
-- `tintColor` - A `String` containing a hex, rgba or rgba color
+- `tintColor` - A `String` containing a hex, rgba or rgba color to use for the browser controls
+- `barTintColor` - A `String` containing a hex, rgba or rgba color to use for the background of the browser controls (only available on iOS 10 and higher)
+- `fromBottom` - A 'Boolean' indicating to open the Safari View from the bottom
 
 __Examples__
 ```js
@@ -92,6 +98,7 @@ SafariView.show({
   url: "http://facebook.github.io/react/blog/2015/03/26/introducing-react-native.html",
   readerMode: true // optional,
   tintColor: "#000" // optional
+  barTintColor: "#fff" // optional
 });
 ```
 
@@ -107,6 +114,14 @@ SafariView.isAvailable()
   .catch(error => {
     console.log(error);
   });
+```
+
+### dismiss()
+Dismisses the currently active Safari View.
+
+__Example__
+```js
+SafariView.dismiss()
 ```
 
 ## Events

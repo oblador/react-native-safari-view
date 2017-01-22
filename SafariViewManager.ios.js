@@ -1,29 +1,30 @@
 /**
  * @providesModule SafariViewManager
- * @flow
  */
 'use strict';
-
-const {
+import {
   NativeModules,
   NativeAppEventEmitter,
   DeviceEventEmitter,
   processColor
-} = require('react-native');
+} from 'react-native';
 const NativeSafariViewManager = NativeModules.SafariViewManager;
 
 /**
  * High-level docs for the SafariViewManager iOS API can be written here.
  */
 
-var SafariViewManager = {
+export default {
   show(options) {
     if (options && options.tintColor) {
       options.tintColor = processColor(options.tintColor);
     }
+    if (options && options.barTintColor) {
+      options.barTintColor = processColor(options.barTintColor);
+    }
 
-    return new Promise(function(resolve, reject) {
-      NativeSafariViewManager.show(options, function(error) {
+    return new Promise((resolve, reject) => {
+      NativeSafariViewManager.show(options, (error) => {
         if (error) {
           return reject(error);
         }
@@ -38,8 +39,8 @@ var SafariViewManager = {
   },
 
   isAvailable() {
-    return new Promise(function(resolve, reject) {
-      NativeSafariViewManager.isAvailable(function(error) {
+    return new Promise((resolve, reject) => {
+      NativeSafariViewManager.isAvailable((error) => {
         if (error) {
           return reject(error);
         }
@@ -51,9 +52,9 @@ var SafariViewManager = {
 
   addEventListener(event, listener) {
     if (event === 'onShow') {
-      DeviceEventEmitter.addListener('SafariViewOnShow', listener);
+      return DeviceEventEmitter.addListener('SafariViewOnShow', listener);
     } else if (event === 'onDismiss') {
-      NativeAppEventEmitter.addListener('SafariViewOnDismiss', listener);
+      return NativeAppEventEmitter.addListener('SafariViewOnDismiss', listener);
     }
   },
 
@@ -65,5 +66,3 @@ var SafariViewManager = {
     }
   }
 };
-
-module.exports = SafariViewManager;
